@@ -34,6 +34,9 @@ void morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_
             response_low = 3;
             response_high = 9;
             break;
+        default:
+            response_low = 6;
+            response_high = 6;
         }
         for (int j = response_low; j < response_high; j++) //add the binary representation to the output
         {
@@ -45,4 +48,64 @@ void morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_
         }
     }
     bin_str[bin_str_size - 1] = '\0'; //guarding against the case that the null terminator is overwritten
+}
+
+/*
+void morse_to_bin_test() {
+    //Test 1: Buffer is large enough, no unexpected characters
+    char out_1_correct[] = "10000000111000";
+    char in_1[] = "./- ";
+    int size_in_1 = 5;
+    char out_1[40];
+    int size_out_1 = 40;
+    morse_to_bin(in_1,size_in_1,out_1,size_out_1);
+    printf("case 1\n");
+    printf(out_1);
+    printf("\n");
+    printf(out_1_correct);
+    printf("\n");
+
+    //Test 2: Buffer is too small, no unexpected characters
+    char out_2_correct[] = "100";
+    char in_2[] = "./- ";
+    int size_in_2 = 5;
+    char out_2[4];
+    int size_out_2 = 4;
+    morse_to_bin(in_2,size_in_2,out_2,size_out_2);
+    printf("case 2\n");
+    printf(out_2);
+    printf("\n");
+    printf(out_2_correct);
+    printf("\n");
+
+    //Test 3: Buffer is big enough; unexpected characters are silently dropped
+    char out_3_correct[] = "10100000001110";
+    char in_3[] = "..y/-";
+    int size_in_3 = 6;
+    char out_3[70];
+    int size_out_3 = 70;
+    morse_to_bin(in_3,size_in_3,out_3,size_out_3);
+    printf("case 3\n");
+    printf(out_3);
+    printf("\n");
+    printf(out_3_correct);
+    printf("\n");
+
+    //Test 4: Buffer is not big enough; unexpected characters are silently dropped
+    char out_4_correct[] = "101000";
+    char in_4[] = "..y/-";
+    int size_in_4 = 6;
+    char out_4[7];
+    int size_out_4 = 7;
+    morse_to_bin(in_4,size_in_4,out_4,size_out_4);
+    printf("case 4\n");
+    printf(out_4);
+    printf("\n");
+    printf(out_4_correct);
+    printf("\n");
+}
+*/
+
+void bin_to_morse(char * bin_str, int bin_str_size, char * morse_str, int morse_str_size)
+{
 }
