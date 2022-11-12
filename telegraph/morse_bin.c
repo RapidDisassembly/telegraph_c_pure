@@ -60,26 +60,33 @@ void single_morse_to_bin_test()
    problem in which the function has to assume that the caller has provided
    'honest' buffer sizes.
 */
-void morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_str_size)
+int morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_str_size)
 {
     bin_str[0] = '\0'; //The string buffer doesn't need to actually BE empty, just appear empty
     int bin_index = 0;
 
-    for (int i = 0; i < morse_str_size; i++){
+    for (int i = 0; i < morse_str_size - 1; i++)
+    {
         char single_response[7];
         int response_length = single_morse_to_bin(morse_str[i], single_response);
-        if (response_length != -1) {
-            if (response_length < (bin_str_size - bin_index)) {
-                strcat(bin_str, single_response);
-                bin_index += response_length;
-            } else {
-                bin_index = bin_str_size;
-            }
+
+        if (response_length == -1)
+        {
+            bin_str[0] = '\0'; //"empty" the string
+            return -1; //propagate the failure
+        }
+
+        if (response_length < (bin_str_size - bin_index))
+        {
+            strcat(bin_str, single_response);
+            bin_index += response_length;
         }
     }
+    return 0;
 }
 
-void morse_to_bin_test() {
+void morse_to_bin_test()
+{
     //Test 1: Buffer is large enough, no unexpected characters
     char out_1_correct[] = "10000000111000";
     char in_1[] = "./- ";
@@ -106,8 +113,8 @@ void morse_to_bin_test() {
     printf(out_2_correct);
     printf("\n");
 
-    //Test 3: Buffer is big enough; unexpected characters are silently dropped
-    char out_3_correct[] = "10100000001110";
+    //Test 3: Buffer is big enough; unexpected characters cause failure
+    char out_3_correct[] = "";
     char in_3[] = "..y/-";
     int size_in_3 = 6;
     char out_3[70];
@@ -119,8 +126,8 @@ void morse_to_bin_test() {
     printf(out_3_correct);
     printf("\n");
 
-    //Test 4: Buffer is not big enough; unexpected characters are silently dropped
-    char out_4_correct[] = "1010";
+    //Test 4: Buffer is not big enough; unexpected characters cause failure
+    char out_4_correct[] = "";
     char in_4[] = "..y/-";
     int size_in_4 = 6;
     char out_4[7];
@@ -134,7 +141,7 @@ void morse_to_bin_test() {
 }
 
 
-void bin_to_morse(char * bin_str, int bin_str_size, char * morse_str, int morse_str_size)
+int bin_to_morse(char * bin_str, int bin_str_size, char * morse_str, int morse_str_size)
 {
 }
 
@@ -166,8 +173,8 @@ void bin_to_morse_test()
     printf(out_2_correct);
     printf("\n");
 
-    //Test 3: Buffer is big enough; unexpected characters are silently dropped
-    char out_3_correct[] = "..- .-/.-";
+    //Test 3: Buffer is big enough; unexpected characters cause failure
+    char out_3_correct[] = "";
     char in_3[] = "1010y111000101110000000n101110";
     int size_in_3 = 31;
     char out_3[10];
@@ -179,8 +186,8 @@ void bin_to_morse_test()
     printf(out_3_correct);
     printf("\n");
 
-    //Test 4: Buffer is not big enough; unexpected characters are silently dropped
-    char out_4_correct[] = "..-";
+    //Test 4: Buffer is not big enough; unexpected characters cause failure
+    char out_4_correct[] = "";
     char in_4[] = "101011y1000101110000-000101110";
     int size_in_4 = 29;
     char out_4[4];
