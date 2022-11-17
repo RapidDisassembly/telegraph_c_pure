@@ -6,8 +6,7 @@
     signal and writes it to a string buffer provided by the caller.*/
 int single_morse_to_bin(char morse_symbol, char * response_6_char_string)
 {
-    switch(morse_symbol)
-    {
+    switch(morse_symbol) {
     case '.' :
         strcpy(response_6_char_string,"100000");
         response_6_char_string[2] = '\0';
@@ -32,22 +31,20 @@ void single_morse_to_bin_test()
 {
     char response[7];
     int r_length = single_morse_to_bin('.',response);
-    for (int i = 0; i < r_length; i++)
-    {
+
+    for (int i = 0; i < r_length; i++) {
         putchar(response[i]);
     }
     printf("\n10\n\n");
 
     r_length = single_morse_to_bin('-',response);
-    for (int i = 0; i < r_length; i++)
-    {
+    for (int i = 0; i < r_length; i++) {
         putchar(response[i]);
     }
     printf("\n1110\n\n");
 
     r_length = single_morse_to_bin('/',response);
-    for (int i = 0; i < r_length; i++)
-    {
+    for (int i = 0; i < r_length; i++) {
         putchar(response[i]);
     }
     printf("\n000000\n\n");
@@ -56,30 +53,38 @@ void single_morse_to_bin_test()
 
 /* Converts a morse signal [composed of dots (.), dashes (-), letter spaces ( )
    and word spaces (/)] into the corresponding telegraph signal, and writes
-   the output into a writable string buffer provided by the caller. Has the typical C
-   problem in which the function has to assume that the caller has provided
-   'honest' buffer sizes.
+   the output into a writable string buffer provided by the caller. The function
+   has to assume that the caller has provided 'honest' buffer sizes. Presumably,
+   this could be worked around by more experienced C programmers.
 */
 int morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_str_size)
 {
     bin_str[0] = '\0'; //The string buffer doesn't need to actually BE empty, just appear empty
     int bin_index = 0;
 
-    for (int i = 0; i < morse_str_size - 1; i++)
-    {
-        char single_response[7];
-        int response_length = single_morse_to_bin(morse_str[i], single_response);
+    //If this is true, it means that the string buffer provided for output is
+    //probably not big enough. Immediate fail.
+    if (bin_str_size < 4*morse_str_size) {
+        return -1;
+    }
 
-        if (response_length == -1)
-        {
+    for (int i = 0; i < morse_str_size - 1; i++) {
+        char single_response[7];
+        int single_response_length = single_morse_to_bin(morse_str[i], single_response);
+
+        //unexpected character
+        if (single_response_length == -1) {
             bin_str[0] = '\0'; //"empty" the string
             return -1; //propagate the failure
         }
 
-        if (response_length < (bin_str_size - bin_index))
-        {
+        //if there's enough remaining space in the string buffer
+        if (single_response_length < (bin_str_size - bin_index)) {
             strcat(bin_str, single_response);
-            bin_index += response_length;
+            bin_index += single_response_length;
+        } else {
+            bin_str[0] = '\0'; //"empty" the string
+            return -1; //propagate the failure
         }
     }
     return 0;
@@ -101,7 +106,7 @@ void morse_to_bin_test()
     printf("\n");
 
     //Test 2: Buffer is too small, no unexpected characters
-    char out_2_correct[] = "10";
+    char out_2_correct[] = "";
     char in_2[] = "./- ";
     int size_in_2 = 5;
     char out_2[4];
