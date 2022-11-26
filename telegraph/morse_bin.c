@@ -6,6 +6,8 @@
     signal and writes it to a string buffer provided by the caller.*/
 int single_morse_to_bin(char morse_symbol, char * response_6_char_string)
 {
+    int fail = -1;
+
     switch(morse_symbol) {
     case '.' :
         strcpy(response_6_char_string,"100000");
@@ -23,7 +25,7 @@ int single_morse_to_bin(char morse_symbol, char * response_6_char_string)
         strcpy(response_6_char_string,"000000");
         return 6;
     default:
-        return -1;
+        return fail;
     }
 }
 
@@ -59,10 +61,12 @@ void single_morse_to_bin_test()
 */
 int morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_str_size)
 {
+    int fail = -1;
+    int success = 0;
     //If this is true, it means that the string buffer provided for output is
     //probably not big enough. Immediate fail.
     if (bin_str_size < 4*morse_str_size) {
-        return -1;
+        return fail;
     }
 
     bin_str[0] = '\0'; //The string buffer doesn't need to actually BE empty, just appear empty
@@ -75,7 +79,7 @@ int morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_s
         //unexpected character
         if (single_response_length == -1) {
             bin_str[0] = '\0'; //"empty" the string
-            return -1; //propagate the failure
+            return fail; //propagate the failure
         }
 
         //if there's enough remaining space in the string buffer
@@ -84,10 +88,10 @@ int morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_s
             bin_index += single_response_length;
         } else {
             bin_str[0] = '\0'; //"empty" the string
-            return -1; //propagate the failure
+            return fail; //propagate the failure
         }
     }
-    return 0;
+    return success;
 }
 
 void morse_to_bin_test()
@@ -147,16 +151,44 @@ void morse_to_bin_test()
 
 char single_bin_to_morse(char * bin_str, int initial_index)
 {
+    char fail = '\0';
 
+    char six_chars[7];
+
+    for (int i = 0; i < 6; i++) {
+        six_chars[i] = bin_str[initial_index + i];
+    }
+
+    six_chars[6] = '\0';
+    if (strcmp(six_chars,"000000") == 0){
+        return '/';
+    }
+
+    six_chars[4] = '\0';
+    if (strcmp(six_chars,"1110") == 0){
+        return '-';
+    }
+
+    six_chars[2] = '\0';
+    if (strcmp(six_chars,"10") == 0){
+        return '.';
+    }
+
+    if (strcmp(six_chars,"00") == 0){
+        return ' ';
+    }
+
+    return fail;
 }
 
 
 int bin_to_morse(char * bin_str, int bin_str_size, char * morse_str, int morse_str_size)
 {
+    int fail = -1;
     //User-provided string buffer is likely not big enough.
     //Immediate fail.
     if (4*morse_str_size < bin_str_size) {
-        return -1;
+        return fail;
     }
 }
 
