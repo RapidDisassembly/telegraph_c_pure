@@ -4,5 +4,5 @@
 
 int main()
 {
-    morse_to_bin_test();
+
 }
