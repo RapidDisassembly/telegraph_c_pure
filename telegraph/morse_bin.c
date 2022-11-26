@@ -59,14 +59,14 @@ void single_morse_to_bin_test()
 */
 int morse_to_bin(char * morse_str, int morse_str_size, char * bin_str, int bin_str_size)
 {
-    bin_str[0] = '\0'; //The string buffer doesn't need to actually BE empty, just appear empty
-    int bin_index = 0;
-
     //If this is true, it means that the string buffer provided for output is
     //probably not big enough. Immediate fail.
     if (bin_str_size < 4*morse_str_size) {
         return -1;
     }
+
+    bin_str[0] = '\0'; //The string buffer doesn't need to actually BE empty, just appear empty
+    int bin_index = 0;
 
     for (int i = 0; i < morse_str_size - 1; i++) {
         char single_response[7];
