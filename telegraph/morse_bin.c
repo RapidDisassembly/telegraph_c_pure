@@ -145,9 +145,19 @@ void morse_to_bin_test()
     printf("\n");
 }
 
+char single_bin_to_morse(char * bin_str, int initial_index)
+{
+
+}
+
 
 int bin_to_morse(char * bin_str, int bin_str_size, char * morse_str, int morse_str_size)
 {
+    //User-provided string buffer is likely not big enough.
+    //Immediate fail.
+    if (4*morse_str_size < bin_str_size) {
+        return -1;
+    }
 }
 
 void bin_to_morse_test()
