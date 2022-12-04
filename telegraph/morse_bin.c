@@ -160,21 +160,21 @@ char single_bin_to_morse(char * bin_str, int initial_index)
     }
 
     six_chars[6] = '\0';
-    if (strcmp(six_chars,"000000") == 0){
+    if (strcmp(six_chars,"000000") == 0) {
         return '/';
     }
 
     six_chars[4] = '\0';
-    if (strcmp(six_chars,"1110") == 0){
+    if (strcmp(six_chars,"1110") == 0) {
         return '-';
     }
 
     six_chars[2] = '\0';
-    if (strcmp(six_chars,"10") == 0){
+    if (strcmp(six_chars,"10") == 0) {
         return '.';
     }
 
-    if (strcmp(six_chars,"00") == 0){
+    if (strcmp(six_chars,"00") == 0) {
         return ' ';
     }
 
@@ -190,6 +190,8 @@ int bin_to_morse(char * bin_str, int bin_str_size, char * morse_str, int morse_s
     if (4*morse_str_size < bin_str_size) {
         return fail;
     }
+
+
 }
 
 void bin_to_morse_test()
@@ -208,7 +210,7 @@ void bin_to_morse_test()
     printf("\n");
 
     //Test 2: Buffer is too small, no unexpected characters
-    char out_2_correct[] = "..-";
+    char out_2_correct[] = "";
     char in_2[] = "1010111000101110000000101110";
     int size_in_2 = 29;
     char out_2[4];
