@@ -149,33 +149,36 @@ void morse_to_bin_test()
     printf("\n");
 }
 
-char single_bin_to_morse(char * bin_str, int initial_index)
+int single_bin_to_morse(char * six_bin_str, char * morse_char)
 {
-    char fail = '\0';
+    int fail = -1;
 
     char six_chars[7];
-
     for (int i = 0; i < 6; i++) {
-        six_chars[i] = bin_str[initial_index + i];
+        six_chars[i] = six_bin_str[i];
     }
 
     six_chars[6] = '\0';
     if (strcmp(six_chars,"000000") == 0) {
-        return '/';
+        morse_char[0] = '/';
+        return 6;
     }
 
     six_chars[4] = '\0';
     if (strcmp(six_chars,"1110") == 0) {
-        return '-';
+        morse_char[0] = '-';
+        return 4;
     }
 
     six_chars[2] = '\0';
     if (strcmp(six_chars,"10") == 0) {
-        return '.';
+        morse_char[0] = '.';
+        return 2;
     }
 
     if (strcmp(six_chars,"00") == 0) {
-        return ' ';
+        morse_char[0] = ' ';
+        return 2;
     }
 
     return fail;
@@ -188,10 +191,17 @@ int bin_to_morse(char * bin_str, int bin_str_size, char * morse_str, int morse_s
     //User-provided string buffer is likely not big enough.
     //Immediate fail.
     if (4*morse_str_size < bin_str_size) {
+        morse_str[0] = '\0';
         return fail;
     }
 
+    int bin_index = 0;
+    int morse_character_length = 0;
+    char morse_character[1];
 
+
+
+    return 0;
 }
 
 void bin_to_morse_test()
